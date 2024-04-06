@@ -1,9 +1,9 @@
-import { Environment } from "../Environment";
+import { RealEnvironment } from "../Environment";
 import { Perception } from "../Perception";
 import { SimpleReflexAgent } from "./SimpleReflexAgent";
 import { AgentActuor } from "../AgentActuor";
 
-const environment = new Environment();
+const environment = new RealEnvironment();
 const perception = new Perception(environment);
 const agent = new SimpleReflexAgent(new AgentActuor(environment, perception));
 
