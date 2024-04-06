@@ -5,7 +5,6 @@ import { Environment, Item } from "../Environment";
 
 export class ModelReflexAgent {
     private agentActuor;
-    private direction = true;
     private isEmpty = true;
     private goal = [-1, -1];
     
@@ -35,11 +34,11 @@ export class ModelReflexAgent {
         
         this.environment[posx][posy] = 1;
         const [goalx, goaly] = this.goal;
+        const isOdd = posy%2;
 
         //drop
         if (posx == startPosx && posy == startPosy && !this.isEmpty) {
             this.isEmpty = !this.isEmpty;
-            this.goal = this.getBestPos();
             return Actions.drop;
         }
 
@@ -60,6 +59,7 @@ export class ModelReflexAgent {
 
                 // get item
                 if (this.isEmpty)  {
+                    this.goal = this.getBestPos();
                     this.isEmpty = !this.isEmpty;
                     return Actions.get;
                 }
@@ -82,16 +82,15 @@ export class ModelReflexAgent {
         } 
 
         // explore environment
-        if (posx < n && this.direction) {
+        if (posx < n && !isOdd) {
             return Actions.right;
         } 
 
-        if (posx > 0 && !this.direction) {
+        if (posx > 0 && isOdd) {
             return Actions.left;
         } 
 
-        if (posx == n || posx == 0 && (posx != n && posy != m)) {
-            this.direction = !this.direction;
+        if (posy < m && (posx != n || posy != m)) {
             return Actions.down
         }
 
@@ -104,9 +103,11 @@ export class ModelReflexAgent {
     }
 
     private getBestPos() {
+        
         for (let i = 0; i < Environment.n; i++) {
-            
-            if (this.direction) {
+            const isOdd = i%2;
+
+            if (!isOdd) {
                 for (let j = 0; j < Environment.m; j++) {
                     if (this.isVisited(j, i)) {
                         return [j, i];

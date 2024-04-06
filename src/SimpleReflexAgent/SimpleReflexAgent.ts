@@ -5,7 +5,6 @@ import { Actions } from "../Actions";
 
 export class SimpleReflexAgent {
     private agentActuor;
-    private direction = true;
     private isEmpty = true;
     
     constructor(actuor: AgentActuor) {
@@ -23,6 +22,8 @@ export class SimpleReflexAgent {
             posy,
             content } = perception;
         
+        const isOdd = posy%2;
+
         //drop
         if (posx == startPosx && posy == startPosy && !this.isEmpty) {
             this.isEmpty = !this.isEmpty;
@@ -48,16 +49,15 @@ export class SimpleReflexAgent {
         }
 
         // explore environment
-        if (posx < n && this.direction) {
+        if (posx < n && !isOdd) {
             return Actions.right;
         } 
 
-        if (posx > 0 && !this.direction) {
+        if (posx > 0 && isOdd) {
             return Actions.left;
         } 
 
-        if (posx == n || posx == 0 && (posx != n && posy != m)) {
-            this.direction = !this.direction;
+        if (posy < m && (posx != n || posy != m)) {
             return Actions.down
         }
 
