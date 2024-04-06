@@ -2,8 +2,9 @@ import { Environment } from "../Environment";
 import { Perception } from "../Perception";
 import { AgentActuor } from "../AgentActuor";
 import { Actions } from "../Actions";
+import { AgentI } from "../AgentI";
 
-export class SimpleReflexAgent {
+export class SimpleReflexAgent implements AgentI {
     private agentActuor;
     private isEmpty = true;
     
